@@ -24,15 +24,15 @@ public class Knight extends Piece {
         int candidateDestinationCoordinate;
         final List<Move> legalMoves = new ArrayList<>();
 
-        for (final int currentCandidateCoordinate : CANDIDATE_MOVES_COORDINATES) {
+        for (final int candidateCoordinateOffset : CANDIDATE_MOVES_COORDINATES) {
 
-            candidateDestinationCoordinate = this.piecePosition + currentCandidateCoordinate;
+            candidateDestinationCoordinate = this.piecePosition + candidateCoordinateOffset;
 
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                if (isFirstColumnExclusion(this.piecePosition, currentCandidateCoordinate) ||
-                        isSecondColumnExclusion(this.piecePosition, currentCandidateCoordinate) ||
-                        isSeventhColumnExclusion(this.piecePosition, currentCandidateCoordinate) ||
-                        isEightColumnExclusion(this.piecePosition, currentCandidateCoordinate)
+                if (isFirstColumnExclusion(this.piecePosition, candidateCoordinateOffset) ||
+                        isSecondColumnExclusion(this.piecePosition, candidateCoordinateOffset) ||
+                        isSeventhColumnExclusion(this.piecePosition, candidateCoordinateOffset) ||
+                        isEightColumnExclusion(this.piecePosition, candidateCoordinateOffset)
                 ) {
                     continue;
                 }
