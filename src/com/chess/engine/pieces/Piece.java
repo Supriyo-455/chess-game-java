@@ -3,8 +3,7 @@ package com.chess.engine.pieces;
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
-
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 public abstract class Piece {
     protected final int piecePosition;
@@ -19,6 +18,6 @@ public abstract class Piece {
         return this.pieceAlliance;
     }
 
-    public abstract List<Move> calculateLegalMoves(final Board board);
+    public abstract ImmutableList<Move> calculateLegalMoves(final Board board);
 
 }

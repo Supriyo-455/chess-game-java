@@ -2,8 +2,10 @@ package com.chess.engine.pieces;
 
 import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
+import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
+import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Move> calculateLegalMoves(Board board) {
+    public ImmutableList<Move> calculateLegalMoves(Board board) {
 
         int candidateDestinationCoordinate;
         final List<Move> legalMoves = new ArrayList<>();
@@ -25,22 +27,53 @@ public class Knight extends Piece {
 
             candidateDestinationCoordinate = this.piecePosition + currentCandidateCoordinate;
 
-            if (true/* is a valid tile*/) {
-                final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
+            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
+                if (isFirstColumnExclusion(this.piecePosition, currentCandidateCoordinate) ||
+                        isSecondColumnExclusion(this.piecePosition, currentCandidateCoordinate) ||
+                        isSeventhColumnExclusion(this.piecePosition, currentCandidateCoordinate) ||
+                        isEightColumnExclusion(this.piecePosition, currentCandidateCoordinate)
+                ) {
+                    continue;
+                }
 
+                final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if (!candidateDestinationTile.isTileOccupied()) {
                     legalMoves.add(new Move());
-                }else{
+                } else {
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAllianceAtDestination = pieceAtDestination.getPieceAlliance();
 
-                    if(this.pieceAlliance == pieceAllianceAtDestination){
+                    if (this.pieceAlliance == pieceAllianceAtDestination) {
                         legalMoves.add(new Move());
                     }
                 }
             }
         }
 
-        return null;
+        return ImmutableList.copyOf(legalMoves);
+    }
+
+    private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
+        return BoardUtils.FIRST_COLUMN[currentPosition] && (
+                candidateOffset == -17 || candidateOffset == -10 || candidateOffset == 6 || candidateOffset == 15
+        );
+    }
+
+    private static boolean isSecondColumnExclusion(final int currentPosition, final int candidateOffset) {
+        return BoardUtils.SECOND_COLUMN[currentPosition] && (
+                candidateOffset == -10 || candidateOffset == 6
+        );
+    }
+
+    private static boolean isSeventhColumnExclusion(final int currentPosition, final int candidateOffset) {
+        return BoardUtils.SEVENTH_COLUMN[currentPosition] && (
+                candidateOffset == 10 || candidateOffset == -6
+        );
+    }
+
+    private static boolean isEightColumnExclusion(final int currentPosition, final int candidateOffset) {
+        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (
+                candidateOffset == 17 || candidateOffset == 10 || candidateOffset == -6 || candidateOffset == -15
+        );
     }
 }
