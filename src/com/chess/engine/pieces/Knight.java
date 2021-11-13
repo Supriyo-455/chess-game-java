@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class Knight extends Piece {
-    private final static int[] CANDIDATE_MOVES_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
+    private final static int[] CANDIDATE_MOVES_VECTOR_COORDINATES = {-17, -15, -10, -6, 6, 10, 15, 17};
 
     public Knight(final int piecePosition, final Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
@@ -24,7 +24,7 @@ public class Knight extends Piece {
         int candidateDestinationCoordinate;
         final List<Move> legalMoves = new ArrayList<>();
 
-        for (final int candidateCoordinateOffset : CANDIDATE_MOVES_COORDINATES) {
+        for (final int candidateCoordinateOffset : CANDIDATE_MOVES_VECTOR_COORDINATES) {
 
             candidateDestinationCoordinate = this.piecePosition + candidateCoordinateOffset;
 
