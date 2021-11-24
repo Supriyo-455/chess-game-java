@@ -11,6 +11,10 @@ public abstract class Piece {
     protected final Alliance pieceAlliance;
     protected final boolean isFirstMove;
 
+    public int getPiecePosition(){
+        return this.piecePosition;
+    }
+
     public Piece(final int piecePosition,final Alliance pieceAlliance) {
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
