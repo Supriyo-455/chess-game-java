@@ -70,4 +70,9 @@ public class Rook extends Piece{
     private static boolean eigthColumnExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
     }
+
+    @Override
+    public String toString() {
+        return PieceType.ROOK.toString();
+    }
 }
