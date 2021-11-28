@@ -7,41 +7,84 @@ import com.chess.engine.board.Move;
 import java.util.Collection;
 
 public abstract class Piece {
+    protected final PieceType pieceType;
     protected final int piecePosition;
     protected final Alliance pieceAlliance;
     protected final boolean isFirstMove;
 
-    public int getPiecePosition(){
-        return this.piecePosition;
-    }
-
-    public Piece(final int piecePosition,final Alliance pieceAlliance) {
+    public Piece(
+            final PieceType pieceType,
+            final int piecePosition,
+            final Alliance pieceAlliance
+    ) {
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
         //TODO: work here
         this.isFirstMove = false;
+        this.pieceType = pieceType;
     }
 
-    public Alliance getPieceAlliance(){
+    public int getPiecePosition() {
+        return this.piecePosition;
+    }
+
+    public Alliance getPieceAlliance() {
         return this.pieceAlliance;
     }
-    public boolean isFirstMove(){
+
+    public boolean isFirstMove() {
         return this.isFirstMove;
     }
+
+    public PieceType getPieceType(){
+        return this.pieceType;
+    }
+
     public abstract Collection<Move> calculateLegalMoves(final Board board);
 
-    public enum PieceType{
+    public enum PieceType {
 
-        PAWN("P"),
-        KNIGHT("N"),
-        BISHOP("B"),
-        QUEEN("Q"),
-        KING("K"),
-        ROOK("R");
+        BISHOP("B"){
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KING("K") {
+            @Override
+            public boolean isKing() {
+                return true;
+            }
+        },
+        KNIGHT("N") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        PAWN("P") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        QUEEN("Q") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        ROOK("R") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        };
 
 
-        private String pieceName;
-        PieceType(final String pieceName){
+        private final String pieceName;
+
+        PieceType(final String pieceName) {
             this.pieceName = pieceName;
         }
 
@@ -49,5 +92,7 @@ public abstract class Piece {
         public String toString() {
             return this.pieceName;
         }
+
+        public abstract boolean isKing();
     }
 }

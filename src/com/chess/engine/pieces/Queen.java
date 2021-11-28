@@ -16,7 +16,7 @@ public class Queen extends Piece {
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9};
 
     public Queen(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+        super(PieceType.QUEEN,piecePosition, pieceAlliance);
     }
 
     private static boolean firstColumnExclusion(final int currentPosition, final int candidateOffset) {
