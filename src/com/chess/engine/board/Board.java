@@ -17,6 +17,7 @@ public class Board {
 
     private final WhitePlayer whitePlayer;
     private final BlackPlayer blackPlayer;
+    private final Player currentPlayer;
 
     private Board(final Builder builder) {
         this.gameBoard = createGameBoard(builder);
@@ -28,6 +29,7 @@ public class Board {
 
         this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
         this.blackPlayer = new BlackPlayer(this, blackStandardLegalMoves, whiteStandardLegalMoves);
+        this.currentPlayer = null;
     }
 
     @Override
@@ -49,6 +51,10 @@ public class Board {
 
     public Player blackPlayer(){
         return this.blackPlayer;
+    }
+
+    public Player currentPlayer(){
+        return this.currentPlayer;
     }
 
     private static String prettyPrint(Tile tile) {
