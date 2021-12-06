@@ -63,6 +63,11 @@ public class Rook extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
 
+    @Override
+    public Rook movePiece(final Move move) {
+        return new Rook(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+    }
+
     private static boolean firstColumnExclusion(final int currentPosition, final int candidateOffset) {
         return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -1);
     }

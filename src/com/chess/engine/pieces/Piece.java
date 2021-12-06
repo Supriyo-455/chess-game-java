@@ -42,6 +42,8 @@ public abstract class Piece {
 
     public abstract Collection<Move> calculateLegalMoves(final Board board);
 
+    public abstract Piece movePiece(final Move move);
+
     public enum PieceType {
 
         BISHOP("B"){

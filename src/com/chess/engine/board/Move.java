@@ -2,7 +2,7 @@ package com.chess.engine.board;
 
 import com.chess.engine.pieces.Piece;
 
-import static com.chess.engine.board.Board.*;
+import static com.chess.engine.board.Board.Builder;
 
 public abstract class Move {
     final Board board;
@@ -19,8 +19,12 @@ public abstract class Move {
         this.destinationCoordinate = destinationCoordinate;
     }
 
-    public int getDestinationCoordinate(){
+    public int getDestinationCoordinate() {
         return this.destinationCoordinate;
+    }
+
+    public Piece getMovedPiece(){
+        return this.movedPiece;
     }
 
     public abstract Board execute();
@@ -39,18 +43,18 @@ public abstract class Move {
         public Board execute() {
             final Builder builder = new Builder();
 
-            for(final Piece piece: this.board.currentPlayer().getActivePieces()){
+            for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
                 //TODO: hashcode equals for pieces
-                if(!this.movedPiece.equals(piece)){
+                if (!this.movedPiece.equals(piece)) {
                     builder.setPiece(piece);
                 }
             }
 
-            for(final Piece piece: this.board.currentPlayer().getOpponent().getActivePieces()){
+            for (final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
                 builder.setPiece(piece);
             }
             //move the moved piece
-            builder.setPiece(null);
+            builder.setPiece(this.movedPiece.movePiece(this));
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
 
             return builder.build();
