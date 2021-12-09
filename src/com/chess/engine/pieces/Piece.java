@@ -11,6 +11,7 @@ public abstract class Piece {
     protected final int piecePosition;
     protected final Alliance pieceAlliance;
     protected final boolean isFirstMove;
+    private final int cachedHashcode;
 
     public Piece(
             final PieceType pieceType,
@@ -22,6 +23,35 @@ public abstract class Piece {
         //TODO: work here
         this.isFirstMove = false;
         this.pieceType = pieceType;
+        this.cachedHashcode = computeHashCode();
+    }
+
+    protected int computeHashCode(){
+        int result = this.pieceType.hashCode();
+        result = 31*result + this.pieceAlliance.hashCode();
+        result = 31*result + this.piecePosition;
+        result = 31*result + (this.isFirstMove?1:0);
+        return result;
+    }
+
+    @Override
+    public boolean equals(final Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Piece)) {
+            return false;
+        }
+        final Piece otherPiece = (Piece) other;
+        return this.piecePosition == otherPiece.getPiecePosition() &&
+                this.pieceType == otherPiece.getPieceType() &&
+                this.pieceAlliance == otherPiece.getPieceAlliance() &&
+                this.isFirstMove == otherPiece.isFirstMove();
+    }
+
+    @Override
+    public int hashCode() {
+       return this.cachedHashcode;
     }
 
     public int getPiecePosition() {
@@ -36,7 +66,7 @@ public abstract class Piece {
         return this.isFirstMove;
     }
 
-    public PieceType getPieceType(){
+    public PieceType getPieceType() {
         return this.pieceType;
     }
 
@@ -46,7 +76,7 @@ public abstract class Piece {
 
     public enum PieceType {
 
-        BISHOP("B"){
+        BISHOP("B") {
             @Override
             public boolean isKing() {
                 return false;
