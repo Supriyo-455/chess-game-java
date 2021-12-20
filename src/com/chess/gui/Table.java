@@ -11,16 +11,16 @@ import java.util.List;
 
 public class Table {
 
+    private final Color lightTileColor = Color.decode("#FFFACD");
+    private final Color darkTileColor = Color.decode("#593E1A");
+    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
+    private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
+    private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
-
-    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
-    private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400,350);
-    private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-
     private final JMenuBar tableMenuBar;
 
-    public Table(){
+    public Table() {
         this.gameFrame = new JFrame("Chess game java");
         this.gameFrame.setLayout(new BorderLayout());
         this.tableMenuBar = populateMenuBar();
@@ -49,14 +49,23 @@ public class Table {
         });
         fileMenu.add(openPGN);
 
+        final JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        fileMenu.add(exitMenuItem);
+
         return fileMenu;
     }
 
-    private class BoardPanel extends JPanel{
+    private class BoardPanel extends JPanel {
         final List<TilePanel> boardTiles;
 
-        BoardPanel(){
-            super(new GridLayout(8,8));
+        BoardPanel() {
+            super(new GridLayout(8, 8));
             this.boardTiles = new ArrayList<>();
             for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
                 final TilePanel tilePanel = new TilePanel(this, i);
@@ -68,10 +77,10 @@ public class Table {
         }
     }
 
-    private class TilePanel extends JPanel{
+    private class TilePanel extends JPanel {
         private final int tileId;
 
-        TilePanel(final BoardPanel boardPanel, final int tileId){
+        TilePanel(final BoardPanel boardPanel, final int tileId) {
             super(new GridBagLayout());
             this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
@@ -80,7 +89,17 @@ public class Table {
         }
 
         private void assignTileColor() {
-
+            if (BoardUtils.FIRST_ROW[this.tileId] ||
+                    BoardUtils.THIRD_ROW[this.tileId] ||
+                    BoardUtils.FIFTH_ROW[this.tileId] ||
+                    BoardUtils.SEVENTH_ROW[this.tileId]) {
+                setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
+            } else if (BoardUtils.SECOND_ROW[this.tileId] ||
+                    BoardUtils.FOURTH_ROW[this.tileId] ||
+                    BoardUtils.SIXTH_ROW[this.tileId] ||
+                    BoardUtils.EIGHTH_ROW[this.tileId]) {
+                setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
+            }
         }
     }
 }
