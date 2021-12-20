@@ -16,14 +16,18 @@ import java.util.List;
 
 public class Table {
 
-    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
-    private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
-    private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-    private final Color lightTileColor = Color.decode("#FFFACD");
-    private final Color darkTileColor = Color.decode("#593E1A");
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final JMenuBar tableMenuBar;
+    private final Board chessBoard;
+
+    private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
+    private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
+    private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
+    private static String defaultPieceImagePath = "art/holywarriors/";
+
+    private final Color lightTileColor = Color.decode("#FFFACD");
+    private final Color darkTileColor = Color.decode("#593E1A");
 
     public Table() {
         this.gameFrame = new JFrame("Chess game java");
@@ -31,6 +35,7 @@ public class Table {
         this.tableMenuBar = populateMenuBar();
         this.gameFrame.setJMenuBar(this.tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+        this.chessBoard = Board.createStandardBoard();
         this.boardPanel = new BoardPanel();
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.setVisible(true);
@@ -90,18 +95,18 @@ public class Table {
             this.tileId = tileId;
             setPreferredSize(TILE_PANEL_DIMENSION);
             assignTileColor();
+            assignTilePieceIcon(chessBoard);
             validate();
         }
 
         private void assignTilePieceIcon(final Board board) {
             this.removeAll();
             if (board.getTile(this.tileId).isTileOccupied()) {
-                String pieceIconPath = "";
                 try {
                     final BufferedImage image = ImageIO.read(
                             new File(
-                                    pieceIconPath +
-                                            board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0, 1) +
+                                    defaultPieceImagePath +
+                                            board.getTile(this.tileId).getPiece().getPieceAlliance().toString().charAt(0) +
                                             board.getTile(this.tileId).getPiece().toString() +
                                             ".gif"
                             )   //For example pieceIconPath+"W"+"B"+".gif"
