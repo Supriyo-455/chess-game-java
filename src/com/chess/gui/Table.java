@@ -31,7 +31,7 @@ public class Table {
     private static final Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
     private static final Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private static final Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-    private static final String defaultPieceImagePath = "art/holywarriors/";
+    public static final String defaultPieceImagePath = "art/holywarriors/";
     private final JFrame gameFrame;
     private final BoardPanel boardPanel;
     private final JMenuBar tableMenuBar;
@@ -170,6 +170,39 @@ public class Table {
             }
             validate();
             repaint();
+        }
+    }
+
+    public static class MoveLog{
+
+        private final List<Move> moves;
+
+        MoveLog(){
+            this.moves = new ArrayList<>();
+        }
+
+        public List<Move> getMoves(){
+            return this.moves;
+        }
+
+        public void addMove(final Move move){
+            this.moves.add(move);
+        }
+
+        public int size(){
+            return this.moves.size();
+        }
+
+        public void clear(){
+            this.moves.clear();
+        }
+
+        public Move removeMove(int index){
+            return this.moves.remove(index);
+        }
+
+        public boolean removeMove(final Move move){
+            return this.moves.remove(move);
         }
     }
 

@@ -8,9 +8,10 @@ import static com.chess.engine.board.Board.Builder;
 
 public abstract class Move {
     public static final Move NULL_MOVE = new NullMove();
-    final Board board;
-    final Piece movedPiece;
-    final int destinationCoordinate;
+    protected final Board board;
+    protected final Piece movedPiece;
+    protected final int destinationCoordinate;
+    protected final boolean isFirstMove;
 
     private Move(
             final Board board,
@@ -20,6 +21,17 @@ public abstract class Move {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate;
+        this.isFirstMove = movedPiece.isFirstMove();
+    }
+
+    private Move(
+            final Board board,
+            final int destinationCoordinate
+    ){
+        this.board = board;
+        this.destinationCoordinate = destinationCoordinate;
+        this.movedPiece = null;
+        this.isFirstMove = false;
     }
 
     @Override
@@ -42,7 +54,8 @@ public abstract class Move {
             return false;
         }
         final Move otherMove = (Move) other;
-        return this.getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
+        return this.getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
+                this.getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
                 this.getMovedPiece() == otherMove.getMovedPiece();
     }
 
@@ -70,11 +83,20 @@ public abstract class Move {
         return null;
     }
 
+    String disambiguationFile() {
+//        for(final Move move : this.board.currentPlayer().getLegalMoves()) {
+//            if(move.getDestinationCoordinate() == this.destinationCoordinate && !this.equals(move) &&
+//                    this.movedPiece.getPieceType().equals(move.getMovedPiece().getPieceType())) {
+//                return BoardUtils.INSTANCE.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).substring(0, 1);
+//            }
+//        }
+        return "";
+    }
+
     public Board execute() {
         final Builder builder = new Builder();
 
         for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
-            //TODO: hashcode equals for pieces
             if (!this.movedPiece.equals(piece)) {
                 builder.setPiece(piece);
             }
@@ -100,6 +122,15 @@ public abstract class Move {
             super(board, movedPiece, destinationCoordinate);
         }
 
+        @Override
+        public boolean equals(final Object other) {
+            return this == other || other instanceof MajorMove && super.equals(other);
+        }
+
+        @Override
+        public String toString() {
+            return movedPiece.getPieceType().toString() + disambiguationFile() +BoardUtils.getCoordinateAtPosition(this.destinationCoordinate);
+        }
     }
 
     public static class AttackMove extends Move {
@@ -295,7 +326,7 @@ public abstract class Move {
 
     public static final class NullMove extends Move {
         public NullMove() {
-            super(null, null, -1);
+            super(null, -1);
         }
 
         @Override

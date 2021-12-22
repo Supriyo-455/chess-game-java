@@ -16,12 +16,12 @@ public abstract class Piece {
     public Piece(
             final PieceType pieceType,
             final int piecePosition,
-            final Alliance pieceAlliance
+            final Alliance pieceAlliance,
+            final boolean isFirstMove
     ) {
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
-        //TODO: work here
-        this.isFirstMove = false;
+        this.isFirstMove = isFirstMove;
         this.pieceType = pieceType;
         this.cachedHashcode = computeHashCode();
     }
@@ -73,6 +73,11 @@ public abstract class Piece {
     public abstract Collection<Move> calculateLegalMoves(final Board board);
 
     public abstract Piece movePiece(final Move move);
+
+    //TODO: implement getPieceValue
+    public int getPieceValue() {
+        return 0;
+    }
 
     public enum PieceType {
 
