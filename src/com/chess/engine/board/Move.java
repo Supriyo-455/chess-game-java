@@ -83,15 +83,15 @@ public abstract class Move {
         return null;
     }
 
-    String disambiguationFile() {
+//    String disambiguationFile() {
 //        for(final Move move : this.board.currentPlayer().getLegalMoves()) {
 //            if(move.getDestinationCoordinate() == this.destinationCoordinate && !this.equals(move) &&
 //                    this.movedPiece.getPieceType().equals(move.getMovedPiece().getPieceType())) {
 //                return BoardUtils.INSTANCE.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).substring(0, 1);
 //            }
 //        }
-        return "";
-    }
+//        return "";
+//    }
 
     public Board execute() {
         final Builder builder = new Builder();
@@ -127,10 +127,10 @@ public abstract class Move {
             return this == other || other instanceof MajorMove && super.equals(other);
         }
 
-        @Override
-        public String toString() {
-            return movedPiece.getPieceType().toString() + disambiguationFile() +BoardUtils.getCoordinateAtPosition(this.destinationCoordinate);
-        }
+//        @Override
+//        public String toString() {
+//            return movedPiece.getPieceType().toString() + disambiguationFile() +BoardUtils.getCoordinateAtPosition(this.destinationCoordinate);
+//        }
     }
 
     public static class AttackMove extends Move {
@@ -352,5 +352,10 @@ public abstract class Move {
             }
             return NULL_MOVE;
         }
+    }
+
+    @Override
+    public String toString() {
+        return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
     }
 }
