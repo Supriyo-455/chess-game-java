@@ -50,7 +50,7 @@ public class Bishop extends Piece {
 
                         if (this.pieceAlliance != pieceAllianceAtDestination) {
                             legalMoves.add(
-                                    new Move.AttackMove(
+                                    new Move.MajorAttackMove(
                                             board,
                                             this,
                                             candidateDestinationCoordinate,

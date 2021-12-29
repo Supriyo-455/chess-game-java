@@ -263,7 +263,7 @@ public abstract class Move {
                 }
             }
             for (final Piece piece: this.board.currentPlayer().getOpponent().getActivePieces()){
-                if(!this.equals(this.getAttackPiece())){
+                if(!piece.equals(this.getAttackPiece())){
                     builder.setPiece(piece);
                 }
             }
@@ -298,7 +298,12 @@ public abstract class Move {
             builder.setEnPassantPawn(movedPawn);
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
             return builder.build();
-         }
+        }
+
+        @Override
+        public String toString() {
+            return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+        }
     }
 
     static abstract class CastleMove extends Move {
