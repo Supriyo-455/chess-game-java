@@ -64,14 +64,14 @@ public class TakenPiecesPanel extends JPanel {
 
         Collections.sort(whiteTakenPieces, new Comparator<Piece>() {
             @Override
-            public int compare(Piece o1, Piece o2) {
+            public int compare(final Piece o1, final Piece o2) {
                 return Ints.compare(o1.getPieceValue(), o2.getPieceValue());
             }
         });
 
         Collections.sort(blackTakenPieces, new Comparator<Piece>() {
             @Override
-            public int compare(Piece o1, Piece o2) {
+            public int compare(final Piece o1, final Piece o2) {
                 return Ints.compare(o1.getPieceValue(), o2.getPieceValue());
             }
         });
@@ -96,7 +96,15 @@ public class TakenPiecesPanel extends JPanel {
                         )   //For example pieceIconPath+"W"+"B"+".gif"
                 );
                 final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
+                final JLabel imageLabel = new JLabel(
+                        new ImageIcon(
+                                icon.getImage().getScaledInstance(
+                                        icon.getIconWidth() - 10,
+                                        icon.getIconHeight() - 10,
+                                        Image.SCALE_SMOOTH
+                                )
+                        )
+                );
                 this.southPanel.add(imageLabel);
             }catch (final IOException e){
                 e.printStackTrace();
