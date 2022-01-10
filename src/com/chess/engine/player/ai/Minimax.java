@@ -9,7 +9,7 @@ public class Minimax implements MoveStrategy{
     private final BoardEvaluator boardEvaluator;
 
     public Minimax() {
-        this.boardEvaluator = null;
+        this.boardEvaluator = new StandardBoardEvaluator();
     }
 
     @Override
