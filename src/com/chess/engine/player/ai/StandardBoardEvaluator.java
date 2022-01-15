@@ -7,16 +7,16 @@ import com.chess.engine.player.Player;
 public final class StandardBoardEvaluator implements BoardEvaluator {
 
     private static final int CHECK_BONUS = 50;
-    private static final int CHECK_MATE_BONUS = 10000;
+    private static final int CHECK_MATE_BONUS = 100000;
     private static final int DEPTH_BONUS = 100;
     private static final int CASTLE_BONUS = 60;
 
     @Override
     public int evaluate(final Board board, final int depth) {
-        return scorePlayer(board, board.whitePlayer(), depth) - scorePlayer(board, board.blackPlayer(), depth);
+        return scorePlayer(board.whitePlayer(), depth) - scorePlayer(board.blackPlayer(), depth);
     }
 
-    private int scorePlayer(final Board board, final Player player, final int depth) {
+    private int scorePlayer(final Player player, final int depth) {
         return pieceValue(player) + mobility(player) + check(player) + checkmate(player, depth) + castled(player);
     }
 

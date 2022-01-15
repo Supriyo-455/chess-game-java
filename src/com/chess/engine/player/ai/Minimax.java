@@ -7,8 +7,10 @@ import com.chess.engine.player.MoveTransition;
 public class Minimax implements MoveStrategy{
 
     private final BoardEvaluator boardEvaluator;
+    private final int searchDepth;
 
-    public Minimax() {
+    public Minimax(final int searchDepth) {
+        this.searchDepth = searchDepth;
         this.boardEvaluator = new StandardBoardEvaluator();
     }
 
@@ -18,7 +20,7 @@ public class Minimax implements MoveStrategy{
     }
 
     @Override
-    public Move execute(Board board, int depth) {
+    public Move execute(Board board) {
 
         final long startTime = System.currentTimeMillis();
 
@@ -28,7 +30,7 @@ public class Minimax implements MoveStrategy{
         int lowestSeenValue = Integer.MAX_VALUE;
         int currentValue;
 
-        System.out.println(board.currentPlayer()+" thinking with depth: "+depth);
+        System.out.println(board.currentPlayer()+" thinking with depth: "+this.searchDepth);
 
         int numMoves = board.currentPlayer().getLegalMoves().size();
 
@@ -36,13 +38,13 @@ public class Minimax implements MoveStrategy{
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if(moveTransition.getMoveStatus().isDone()){
                 if(board.currentPlayer().getAlliance().isWhite()){
-                   currentValue = min(moveTransition.getTransitionBoard(), depth-1);
+                   currentValue = min(moveTransition.getTransitionBoard(), this.searchDepth-1);
                    if(currentValue >= highestSeenValue){
                        highestSeenValue = currentValue;
                        bestMove = move;
                    }
                 }else {
-                    currentValue = max(moveTransition.getTransitionBoard(), depth-1);
+                    currentValue = max(moveTransition.getTransitionBoard(), this.searchDepth-1);
                     if(currentValue <= lowestSeenValue){
                         lowestSeenValue = currentValue;
                         bestMove = move;
@@ -56,8 +58,12 @@ public class Minimax implements MoveStrategy{
         return bestMove;
     }
 
+    private static boolean isEndGameScenario(final Board board) {
+        return board.currentPlayer().isInCheckMate() || board.currentPlayer().isInStaleMate();
+    }
+
     public int max(final Board board, final int depth){
-       if(depth == 0 /*|| game over*/){
+       if(depth == 0 || isEndGameScenario(board)){
            return this.boardEvaluator.evaluate(board, depth);
        }
        int highestSeenValue = Integer.MIN_VALUE;
@@ -74,7 +80,7 @@ public class Minimax implements MoveStrategy{
     }
 
     public int min(final Board board, final int depth){
-        if(depth == 0 /*|| game over*/){
+        if(depth == 0 || isEndGameScenario(board)){
             return this.boardEvaluator.evaluate(board, depth);
         }
         int lowestSeenValue = Integer.MAX_VALUE;
